@@ -1,159 +1,142 @@
-# 리액트 CRA 프로젝트
+# JSX 1.
 
-- `Create React App` 줄임말
+- React 에서 사용하는 html 태그
+- 용도 : 컴포넌트 만들기
 
-## 1. VSCode 플러그인 설치
+## 1. Component 란?
 
-- ESLint : 필수 (추후 셋팅)
-- Error Lens : JS 코드 에러 체크
-- ES7 + React/Redux/React-Native snippets : React 단축키
-- Prettier (기존 설치) : 포맷유지
-- Simple React Sinppets
+- HTML 태그 형태를 리턴하는 함수
+- 화살표 이든, 일반 함수 이든 `HTML 태그를 리턴`하면 인정.
+- JSX 는 `반드시 하나의 태그`에 `포함되도록 배치`하여야 한다.
+- `<></>` 를 `Fragment` 라고 합니다.
+- 파일명 및 컴포넌트 함수는 반드시 `파스칼` 이어야 한다.
 
-## 2. 리액트 프로젝트 생성 규칙
+## 2. Component 와 Page 구분 (관례상)
 
-- 프로젝트명은 즉, 폴더명은 무조건 `소문자` 영문 입니다.
-- 폴더명에 특수기호는 `-` 외에는 금지
-- 프로젝트 생성하면 기본적으로 `git init` 이 자동 셋팅됩니다.
-- 추가로 `git remote add origin 주소` 진행 필요
+- `폴더명은 반드시 소문자`로 하여야 한다.
+- 각 화면단위로 구성한다면 `pages 폴더`에 저장
+- `하나의 html 을 완성하기 위한 배치 요소`라면 `components 폴더`에 저장
 
-## 3. 리액트 프로젝트 `보일러플레이트` 생성 명령
+# css
 
-```bash
-npx create-react-app@latest 프로젝트명
-npx create-react-app@latest .
+## 1. JSX 에 css 추가하기
 
-git remote and origin 주소
+- 일반적으로 src 폴더 하단에 `css 폴더`를 생성함.
+- css 파일은 모두 이곳에 배치한다.
+- css 파일명은 컴포넌트명과 동일하게 파스칼케이스를 사용한다.
+- 예) Header.css, Footer.css, Slide.css
 
-```
+## 2. css 사용하기
 
-## 4. 생성된 파일 살펴보기
+### src/index.css
 
-- 만약에 회사에 가면 기존 소스를 fork 받으실 겁니다.
-
-### 4.1. `package.json` 최초로 알아야 하는 파일
-
-- node_modules 에 다운로드 받아서 파일을 관리하는 용도.
-- 전체 프로젝트에서 활용한 npm 목록을 관리한다.
-- 절대 삭제, 수정은 손으로 하지 않는다.
-- node_modules 폴더 다운 명령
-
-```bash
-npm install
-npm i
-```
-
-- `dependencies` : 항목은 웹에 올라가는 js 라이브러리 소스
-- `scripts` : `npm run 명령어`
-
-```bash
-npm run build
-
-# 개발 버전 실행
-npm run start
-
-# 테스트 버전 실행 : Test Driven Develop (테스트 주도 개발)
-npm run test
-```
-
-- 우리는 당분간 testing 은 하지 않을 겁니다.
-- package.json 을 수정합니다. (`testing npm 제거`)
-- `npm install` 하시기 전에 반드시 `package-lock.json` 제거 후 진행
-
-### 4.2. `.gitignore` 파일
-
-- GitHub 에 업로드 되면 절대 안되는 파일과 폴더 목록 리스트
-- 실습
-- `.env`파일 생성
-
-```txt
-pass=1234
-```
-
-### 4.3. public 폴더 살펴보기
-
-- public 폴더는 `npm run build` 시 압축제외 됨.
-
-- 우리가 필요로 한 images, fonts 와 같은 리소스를 배치함.
-- favicon.ico : 즐겨찾기, 주소 공유시 보여질 아이콘
-- logo192.png, logo512.png : 휴대폰에서 바로가기 저장시 보여질 아이콘
-- mainifest.json : 리액트도 웹 앱이라서 앱의 설명서 (PWA)
-- robots.txt : 웹 크롤링 허용 여부, 검색엔진 탐색 허용 여부
-- sitemap.xml : 생성권장합니다. (검색엔진 노출 위해서)
-- index.html : 웹 실행시 최초로 보여질 페이지
-
-### 4.4. src 폴더 살펴보기
-
-#### 4.4.1 파일 삭제 권장 항목
-
-- testing 항목 관련 파일 삭제 권장
-- `파일명에 test` 가 있거나 폴더가 test 폴더면 삭제
-- `App.test.js` 삭제
-- `setupTest.js` 삭제
-- `reportWebVitals.js` 삭제 (이쁘게 성능 표현)
-- logo.svg 교체
-- App.css 삭제
-
-#### 4.4.2. 삭제 하지 않기를 권장합니다.
-
-- index.js 삭제
+- 기본적인 css 적용
+- index.js 에 적용되는 css
+- css 를 불러들이는 import 형태 확인
 
 ```js
-import React from "react";
-import ReactDOM from "react-dom/client";
 import "./index.css";
-import App from "./App";
-// import reportWebVitals from './reportWebVitals';
-
-const root = ReactDOM.createRoot(document.getElementById("root"));
-// js 로 root 에 html React 명령으로 그려라
-root.render(
-  // React.StrictMode 는 개발 메세지 여러번 출력하라
-  // <React.StrictMode>
-  <App />
-  // </React.StrictMode>
-);
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-// reportWebVitals();
 ```
 
-- index.js 의 최종 모양
+### src/pages/StartPage.jsx
 
-```js
-import React from "react";
-import ReactDOM from "react-dom/client";
-import "./index.css";
-import App from "./App";
-const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<App />);
+- src/css/StartPage.css 파일 생성
+- css 파일 불러들이기
+
+```jsx
+import "../css/StartPage.css";
 ```
 
-- index.css 기본 css
+- Footer.jsx
 
-- 원본
+```jsx
+import "../css/Footer.css";
+```
+
+- Header.jsx
+
+```jsx
+import "../css/Header.css";
+```
+
+- Slide.jsx
+
+```jsx
+import "../css/Slide.css";
+```
+
+## 3. 외부 css 라이브러리 사용하기
+
+### 3.1. 링크 방식
+
+- 위 처럼 리액트에서 활용은 추천하지 않습니다.
+- 일반 웹 퍼블리싱에서만 활용하시길 추천
+- reset.css : https://meyerweb.com/eric/tools/css/reset/
+- normalize.css : https://necolas.github.io/normalize.css/8.0.1/normalize.css
+- fontAwsome : https://cdnjs.com/libraries/font-awesome
+- 구글 폰트 : https://fonts.google.com
+
+- public/index.html 파일에 추가
+
+```html
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="마인드 다이어리 서비스입니다." />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <title>마인드 다이어리</title>
+    <!-- reset.css -->
+    <link
+      rel="stylesheet"
+      href="https://meyerweb.com/eric/tools/css/reset/reset200802.css"
+    />
+    <!-- normalize.css -->
+    <link
+      rel="stylesheet"
+      href="https://necolas.github.io/normalize.css/8.0.1/normalize.css"
+    />
+    <!-- font-awsome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <!-- 구글 폰트 -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+  </body>
+</html>
+```
+
+### 3.2. npm 설치 방식 권장
+
+```bash
+npm i normalize
+npm i reset-css
+npm install react-icons --save
+```
+
+### 3.3. 구글폰트는 `index.css 에서 작성` 권장
+
+- index.css 에 모든 페이지에 적용되는 기본 파일이므로
+- link 방식 보다는 @import url 방식 권장
 
 ```css
-body {
-  margin: 0;
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
-    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap");
 
-code {
-  font-family:
-    source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
-}
-```
-
-- 변경
-
-```css
 * {
   margin: 0;
   padding: 0;
@@ -174,104 +157,339 @@ body {
 }
 ```
 
-- App.js : 최초로 보여주는 내용 컴포넌트 (html, css, js)
-- `rfce` : React Function Component Export 단축키
--
+## 4. 일반 css 적용해 보기
+
+- css : `import "../css/StartPage.css";`
+- jsx : `<div className="box">로고</div>`
+- css 내용 : `.box {  background-color: red;}`
+
+- StartPage.jsx
+
+```jsx
+import React from "react";
+// css
+import "../css/StartPage.css";
+// components
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+import Slide from "../components/Slide";
+
+function StartPage() {
+  return (
+    <>
+      <div className="box">로고</div>
+      {/* 헤더 컴포넌트 */}
+      <Header></Header>
+      {/* 슬라이드 컴포넌트 */}
+      <Slide></Slide>
+      {/* 분류메뉴 컴포넌트 */}
+      {/* 공지 컴포넌트 */}
+      {/* 추천 컴포넌트 */}
+      {/* 새목록 컴포넌트 */}
+      {/* 앱설치 안내 컴포넌트 */}
+      {/* 하단 컴포넌트 */}
+      <Footer></Footer>
+    </>
+  );
+}
+
+export default StartPage;
+```
+
+- StartPage.css
+
+```css
+.box {
+  background-color: red;
+}
+```
+
+## 5. `module.css` 적용해 보기
+
+- index.css : 공통 적용 내용. (클래스 명 충돌 가능성)
+- StartPage.css 를 파일명 변경 : `StartPage.module.css`
+- css 가 아니라 module.css 를 불러들임.
+
+```jsx
+// import from "../css/StartPage.css"
+import styles from "../css/StartPage.module.css";
+```
+
+```jsx
+// <div className="box">로고</div>
+<div className={styles.box}>로고</div>
+```
+
+## 6. SCSS 활용하기
+
+- 소스 가독성이 상당히 좋다.
+- css 를 체계적으로 생성 및 관리.
+
+### 6.1. SCSS npm 설치
+
+- VSCode 플러그인은 설치 되어 있음. (live sass compiler)
+
+```bash
+npm i sass -D
+```
+
+### 6.2. 기본 폴더 생성
+
+- src/scss 폴더 생성 권장
+- src/scss/test.scss 파일 생성
+- `Watch Sass...` 실행
+
+### 6.3. 중첩(Nesting)
+
+```scss
+.wrap {
+  position: relative;
+  .notice {
+    width: 800px;
+    height: 400px;
+    a {
+      display: block;
+      &::hover {
+        background-color: red;
+      }
+      span {
+        display: block;
+      }
+    }
+  }
+}
+```
+
+### 6.4. 변수
+
+- 변수는 `$`기호를 사용한다.
+- 가능하면 외부파일로 생성하시길 권장
+- 변수만 모은 파일은 `css 생성을 하지 않는게` 좋아요
+
+```scss
+// 변수만들기
+
+$width-800: 800px;
+$heigh-400: 400px;
+$red: red;
+
+.wrap {
+  position: relative;
+  .notice {
+    width: 800px;
+    height: 400px;
+    a {
+      display: block;
+      &::hover {
+        background-color: red;
+      }
+      span {
+        display: block;
+      }
+    }
+  }
+}
+```
+
+- 변수만 모은 `\_val.scss`, `\_color.scss`
+
+```scss
+// _val.scss
+$width-800: 800px;
+$heigh-400: 400px;
+```
+
+```scss
+// _color.scss
+$red: red;
+```
+
+```scss
+// test.scss
+// 변수만들기
+
+@import "val";
+@import "color";
+
+.wrap {
+  position: relative;
+  .notice {
+    width: 800px;
+    height: 400px;
+    a {
+      display: block;
+      &::hover {
+        background-color: red;
+      }
+      span {
+        display: block;
+      }
+    }
+  }
+}
+```
+
+### 6.5. 함수
+
+- `파일명은 _ 붙이고 생성`, css 생성되지 말도록.
+- `src/scss/_mixins.scss` 파일 생성.
+
+### 6.6. `React 에서 scss` 쓰기로 했다면?
+
+- 반드시 `npm i sass -D` 가 되어있다는 전제로 진행 가능.
+- pages/StartPage.module.scss 파일 생성
+
+```jsx
+import "./StartPage.scss";
+```
+
+- pages/StartPage`.module.`scss 파일명 수정
+
+```jsx
+import styles from "./StartPage.module.scss";
+
+<div className={style.wrap}></div>;
+```
+
+# JSX.2
+
+## 1. JSX 에서 변수 사용하기
+
+- 값의 종류: 글자, 숫자, null, undifined...
+- 보간법(`{}`)을 이용하기: 중괄호 표현법
 
 ```js
 import React from "react";
 
-function App() {
-  // js 코딩 자리
-  // return 자리에 html 태그(jsx) 를 작성
-  return <div>App</div>;
+function Header() {
+  // js 코드 자리
+  const title = "웹 서비스 제목";
+  const version = 0.5;
+  function say() {
+    return "하하하";
+  }
+  // 아래는 html jsx 출력자리
+  return (
+    <div>
+      <div>{title}</div>
+      <div>
+        버전: {version} {say()}
+      </div>
+    </div>
+  );
 }
 
-export default App;
+export default Header;
 ```
 
-## 5. 협업 환경 셋팅
-
-- 반드시 플러그인을 설치하고 진행하셔야 합니다.
-- 회사 마다 ESLint 설정이 다릅니다.
-- 반드시 회사 선임에게 물어보고 셋팅하시는 것을 추천
-- `ESLint 7` 버전으로 셋팅을 함.
-
-```bash
-npm install eslint@7 -D
-```
-
-#### 5.1.2. 초기서 ESLint 환경 설정 생성하기
-
-- 우선은 json 파일로 생성해줌 `.eslintrc.json`
-
-```bash
-npx eslint --init
-```
-
-### 5.2. Prettier 설정
-
-- Prettier 는 VSCode 설치가 되어 있어야 함.
-
-#### 5.2.1. npm 설치
-
-```bash
-npm i prettier -D
-```
-
-#### 5.2.2. `.prettierrc.json`
-
-```json
-{
-  "singleQuote": false,
-  "semi": true,
-  "useTabs": false,
-  "tabWidth": 2,
-  "trailingComma": "all",
-  "prinWidth": 80,
-  "arrowParens": "avoid",
-  "endOfLine": "auto"
-}
-```
-
-### 5.3. ESLint 와 prettier 와 통합 관리
-
-- ESLint 가
-
-```bash
-npm i eslint-config-prettier -D
-npm i eslint-plugin-prettier -D --force
-```
-
-### 5.3.2. `.eslintrc.json` 수정
-
-### 5.3.3. 설정 작동 확인
+## 2. style 태그에 `css 객체` 넣기
 
 ```js
 import React from "react";
 
-function App() {
-  // js 코딩 자리
-  var test = 1;
-  console.log(test);
-  // return 자리에 html 태그(jsx) 를 작성
-  return <div>App</div>;
+function Header() {
+  // js 코드 자리
+  const title = "웹 서비스 제목";
+  const version = 0.5;
+  function say() {
+    return "하하하";
+  }
+
+  // 아래는 html jsx 출력자리
+  return (
+    <div>
+      <div
+        style={{
+          backgroundColor: "green",
+          color: "fff",
+          border: "5px solid hotpink",
+        }}
+      >
+        {title}
+      </div>
+      <div>
+        버전: {version} {say()}
+      </div>
+    </div>
+  );
 }
 
-export default App;
+export default Header;
 ```
 
-### 5.4. ESLint 기본 사용법
+- 아래처럼 변수에 담아서 전달하시길 추천
 
-- rules 를 수정하시기를 추천
+```js
+import React from "react";
 
-```json
-"rules": {
-    "no-unused-vars": "off"
+function Header() {
+  // js 코드 자리
+  const title = "웹 서비스 제목";
+  const version = 0.5;
+  function say() {
+    return "하하하";
+  }
+
+  const bgObj = {
+    backgroundColor: "green",
+    color: "#fff",
+    border: "5px solid hotpink",
+  };
+
+  // 아래는 html jsx 출력자리
+  return (
+    <div>
+      <div style={bgObj}>{title}</div>
+      <div>
+        버전: {version} {say()}
+      </div>
+    </div>
+  );
 }
+
+export default Header;
 ```
 
-### 5.5. VSCode 프로젝트 셋팅
+## 3. css 에 객체를 별도로 모아서 관리하기
 
-- `.vscode` 폴더 만들기
-- `.vscode/settings.json` 파일 만들기
+- 위의 css 객체를 `객체 리터럴 오브젝트 방식` 칭함
+- 관례상 css 객체는 `파스칼` 케이스를 씁니다.
+
+```js
+export const BgObj = {
+  backgroundColor: "green",
+  color: "#fff",
+  border: "5px solid hotpink",
+};
+export const BgObjRed = {
+  backgroundColor: "red",
+  color: "#fff",
+  border: "5px solid green",
+};
+```
+
+```jsx
+import React from "react";
+import { BgObj, BgObjRed } from "./bg";
+function Header() {
+  // js 코드 자리
+  const title = "웹 서비스 제목";
+  const version = 0.5;
+  function say() {
+    return "하하하";
+  }
+  const isLogin = true;
+
+  // 아래는 html jsx 출력자리
+  return (
+    <div>
+      <div style={isLogin ? BgObj : BgObjRed}>{title}</div>
+      <div>
+        버전: {version} {say()}
+      </div>
+    </div>
+  );
+}
+
+export default Header;
+```
