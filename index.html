@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      async function getData(addr, method) {
+        // 주소
+        const url = `https://jsonplaceholder.typicode.com/${addr}`;
+        try {
+          const response = await fetch(url, { method });
+          if(response.ok) {
+            return response.json();
+          }
+          return null;
+        } catch (error) {
+          
+          console.log(error);
+        }
+      }
+      function postParse(_data) {}
+      function albumsParse(_data) {}
+      function photosParse(_data) {}
+      function todosParse(_data) {}
+
+      getAllData();
+      async function getAllData() {
+
+      }
+          const postData = await getData("posts", "GET");
+          postParse(postData);
+          const albumsData = await getData("albums", "GET");
+          albumsParse(albumsData);
+
+          const photosData = await getData("photos", "GET");
+          photosParse(photosData);
+          const todosData = await getData("todos", "GET");
+          todosParse(todosData);
+    </script>
+  </body>
+</html>

@@ -1,496 +1,281 @@
-# JSX 1.
+# 비동기(Asynchronous)
 
-- React 에서 사용하는 html 태그
-- 용도 : 컴포넌트 만들기
+- `비동기 처리`란 js에서 너무 오래 시간 소비를 하는 작업
+- 예) 백엔드 서버에게 자료를 요청하고 회신을 기다리는 경우
+- 예) 파일을 읽어들이고, 서버로 파일을 전송하고, 결과를 기다리는 경우
+- 비동기 처리는 시간이 많이 걸리는 작업 진행 중에 다른 일도 `병렬로 처리`하도록 함.
 
-## 1. Component 란?
+## 1. 종류
 
-- HTML 태그 형태를 리턴하는 함수
-- 화살표 이든, 일반 함수 이든 `HTML 태그를 리턴`하면 인정.
-- JSX 는 `반드시 하나의 태그`에 `포함되도록 배치`하여야 한다.
-- `<></>` 를 `Fragment` 라고 합니다.
-- 파일명 및 컴포넌트 함수는 반드시 `파스칼` 이어야 한다.
+- XHR (Xml Http Request)
+- Callback 함수
+- Promise 함수
 
-## 2. Component 와 Page 구분 (관례상)
+## 2. Dummy/Mockup 사이트 (백엔드 자료를 회신)
 
-- `폴더명은 반드시 소문자`로 하여야 한다.
-- 각 화면단위로 구성한다면 `pages 폴더`에 저장
-- `하나의 html 을 완성하기 위한 배치 요소`라면 `components 폴더`에 저장
+- https://jsonplaceholder.typicode.com
+- https://fakestoreapi.com
+- https://www.data.go.kr
 
-# css
+## 3. 백엔드 데이터 API 확인 프로그램
 
-## 1. JSX 에 css 추가하기
+- PostMan 설치 및 활용 필요
+- 백엔드 측에 Swagger 구성을 요청하시면 좋습니다.
 
-- 일반적으로 src 폴더 하단에 `css 폴더`를 생성함.
-- css 파일은 모두 이곳에 배치한다.
-- css 파일명은 컴포넌트명과 동일하게 파스칼케이스를 사용한다.
-- 예) Header.css, Footer.css, Slide.css
+## 4. XHR (XML Http Request)
 
-## 2. css 사용하기
+- `Request` 라는 단어를 알고 계셔야 합니다.(자료 요청)
+- `Response` 라는 단어를 알고 계셔야 합니다. (결과 회신)
+- `Query` 라는 단어도 알고 계셔야 합니다. (물음, Request 한 문자열)
 
-### src/index.css
+### 4.1. 쿼리의 이해
 
-- 기본적인 css 적용
-- index.js 에 적용되는 css
-- css 를 불러들이는 import 형태 확인
+- `https://isearch.interpark.com/result?q=대구&referrer=`
+- 도메인 : https://isearch.interpark.com
+- 라우터 경로 : /result
+- 쿼리(자료요청 문자열)의 시작 : ?
+
+### 4.2. 실제쿼리 상세 설명
+
+- 실제쿼리 : q=대구&referrer=
+- 변수 q = 대구
+- referrer = null
+
+### 4.3. 예제 분석
+
+### 4.4. 쿼리를 전송시에는 5가지 방식으로 보낼 수 있다.
+
+- `CRUD` 작업 (DB를 Create, Read, Update, Delete)
+
+- GET : 자료를 주세요. (DB 에서 자료 읽고 결과 회신)
+- POST : 자료를 전송합니다. (DB 에서 자료 한개 추가)
+- DELETE : 자료를 삭제하세요. (DB 에서 자료 한개 삭제)
+- PUT : 하나의 자료내용 전부를 교체하세요. (DB 에서 자료 한개 전체수정)
+- PATCH : 하나의 자료내용중 한 부분만 수정하세요. (DB 에서 자료 한개 중 일부 수정)
+
+### 4.5. XHR
 
 ```js
-import "./index.css";
+// 전체 게시글 요청하는 함수
+function getPosts() {
+  console.log("전체자료 주세요.");
+  // 1. XHR 객체를 만든다.
+  const xhr = new XMLHttpRequest();
+  // 2. 백엔드에서 알려준 주소로 접속한다.
+  // xhr.open("방식", "주소")
+  xhr.open("GET", "https://jsonplaceholder.typicode.com/posts");
+
+  // 3. 만들어 둔 xhr 을 전송
+  xhr.send();
+  console.log("자료를 전송하였습니다.");
+  console.log("다음 작업 진행합니다.");
+
+  // 4. 백엔드에서 회신된 결과가 오면 실행됩니다.
+  xhr.onload = function () {
+    console.log("요청 처리가 된 경우의 결과 : ", xhr);
+    if (xhr.status === 200) {
+      console.log(xhr.responseText);
+    } else if (xhr.status === 404) {
+      console.log("없는 페이지로 접속하셨습니다.");
+    } else if (xhr.status === 505) {
+      console.log("서버가 꺼졌습니다. 잠시 후 다시 시도해주세요.");
+    }
+  };
+}
+// 요청하기
+getPosts();
 ```
 
-### src/pages/StartPage.jsx
+### 4.6. 콜백함수로 개선해 보기
 
-- src/css/StartPage.css 파일 생성
-- css 파일 불러들이기
+- 코드 개선 시도
+- 예) 주소와 메서드 를 편리하게 개선
 
-```jsx
-import "../css/StartPage.css";
+- `콜백 문제가 발생할 듯`
+
+```js
+// 지정된 주소로 Http 요청을 보내고 결과를 함수로 처리함.
+@param {string} addr - 요청을 보낼 url (예: "posts", "albums")
+@param {"GET"|"POST"|"PUT"|"DELETE"|"PATCH" } method - HTTP 메소드 종류
+@param {(responseText:string) => void} callback - 요청 성공시
+
+function getData(addr, method) {
+  const url = `https://jsonplaceholder.typicode.com/${addr}`;
+  const xhr = new XMLHttpRequest();
+  xhr.open(method, url);
+  xhr.send();;
+  xhr.onload = function () {
+    if(xhr.status === 200) {
+      // 콜백함수자리
+      callback(xhr.responseText);
+    } else if (xhr.status === 404) {
+      console.log("없는 페이지로 접속하셨습니다.");
+    } else if (xhr.status === 505) {
+      console.log("서버가 꺼졌습니다. 잠시 후 다시 시도해주세요.");
+    }
+  }
+}
+function postParse(_data){}
+function albumsParse(_data){}
+function photosParse(_data){}
+function todosParse(_data){}
+getData("posts", "GET", postParse);
+getData("albums", "GET", albumsParse);
+getData("photos", "GET", photosParse);
+getData("todos", "GET", todosParse);
 ```
 
-- Footer.jsx
+### 4.7. HTTP Status의 이해
 
-```jsx
-import "../css/Footer.css";
-```
+- https://
 
-- Header.jsx
+## 5. Promise
 
-```jsx
-import "../css/Header.css";
-```
+- `콜백 문제` 에 의한 단계별 실행과정에 대한 해결방안으로 제공
+- 서버 연동이 끝날 때, `성공 함수`와 `실패 함수` 2개를 매개변수로 받아서 실행
+- 2개의 함수는 서버연동이 완료되면 자동실행 되도록 구성.
 
-- Slide.jsx
+## 5.1. Promise 는 2개의 매개변수(즉 콜백함수) 를 받음
 
-```jsx
-import "../css/Slide.css";
-```
+- resolve 콜백함수 : 백엔드 정상 결과 처리 함수
+- reject 콜백함수 : 백엔드 오류 결과 처리 함수
 
-## 3. 외부 css 라이브러리 사용하기
+## 5.2. Promise 는 3가지의 상태가 있습니다.
 
-### 3.1. 링크 방식
+- Pending : 결과를 대기중 ...
+- Resolved : 성공됨
+- Rejected : 실패함
 
-- 위 처럼 리액트에서 활용은 추천하지 않습니다.
-- 일반 웹 퍼블리싱에서만 활용하시길 추천
-- reset.css : https://meyerweb.com/eric/tools/css/reset/
-- normalize.css : https://necolas.github.io/normalize.css/8.0.1/normalize.css
-- fontAwsome : https://cdnjs.com/libraries/font-awesome
-- 구글 폰트 : https://fonts.google.com
-
-- public/index.html 파일에 추가
+## 5.3. Promise Chaning 예제
 
 ```html
-<!doctype html>
-<html lang="ko">
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta name="description" content="마인드 다이어리 서비스입니다." />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <title>마인드 다이어리</title>
-    <!-- reset.css -->
-    <link
-      rel="stylesheet"
-      href="https://meyerweb.com/eric/tools/css/reset/reset200802.css"
-    />
-    <!-- normalize.css -->
-    <link
-      rel="stylesheet"
-      href="https://necolas.github.io/normalize.css/8.0.1/normalize.css"
-    />
-    <!-- font-awsome -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <!-- 구글 폰트 -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
-      rel="stylesheet"
-    />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
   </head>
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
+    <script>
+      function getData(addr, method) {
+        // 주소
+        const url = `https://jsonplaceholder.typicode.com/${addr}`;
+
+        return new Promise(function (reslove, rejected) {
+          const xhr = new XMLHttpRequest();
+          xhr.open(method, url);
+          xhr.send();
+
+          xhr.onload = function () {
+            if (xhr.status === 200) {
+              // 콜백함수자리
+              reslove(xhr.responseText);
+            } else if (xhr.status === 404) {
+              rejected(`${addr} 의 쿼리가 잘못되었습니다. 확인하세요.`);
+            } else if (xhr.status === 505) {
+              rejected(`알 수 없는 오류입니다. ${xhr.status}`);
+            }
+          };
+        });
+        const xhr = new XMLHttpRequest();
+      }
+      function postParse(_data) {}
+      function albumsParse(_data) {}
+      function photosParse(_data) {}
+      function todosParse(_data) {}
+      getData("posts", "GET")
+        .then(function (res) {
+          postParse(res);
+          return getData("albums", "GET");
+        })
+        .then(function (res) {
+          albumsParse(res);
+          return getData("albums", "GET");
+        })
+        .then(function (res) {
+          photosParse(res);
+          return getData("photos", "GET");
+        })
+        .then(function (res) {
+          todosParse(res);
+          return getData("todos", "GET");
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+    </script>
   </body>
 </html>
 ```
 
-### 3.2. npm 설치 방식 권장
+## 6. async/await
 
-```bash
-npm i normalize
-npm i reset-css
-npm install react-icons --save
+- 추천
+
+### 6.1. 반드시 다음 처럼 코딩을 진행하여야 한다.
+
+- 반드시 함수여야 합니다.
+
+```js
+function getAllData() {}
 ```
 
-### 3.3. 구글폰트는 `index.css 에서 작성` 권장
+- 반드시 function 앞에 async 를 붙여줘야 합니다.
 
-- index.css 에 모든 페이지에 적용되는 기본 파일이므로
-- link 방식 보다는 @import url 방식 권장
+```js
+async function getAllData() {}
+```
 
-```css
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+- 반드시 function 안에 try ~ catch 를 작성합니다.
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  outline-style: none;
-}
-a {
-  text-decoration: none;
-  color: #000;
-}
-ul,
-ol {
-  list-style: none;
-}
-html {
-}
-body {
+```js
+async function getAllData() {
+  try {
+  } catch (error) {}
 }
 ```
 
-## 4. 일반 css 적용해 보기
+- 실행하려는 함수는 반드시 try 블럭 안쪽에 배치
+- 실행 하려는 함수는 반드시 앞에 await 를 붙인다.
 
-- css : `import "../css/StartPage.css";`
-- jsx : `<div className="box">로고</div>`
-- css 내용 : `.box {  background-color: red;}`
-
-- StartPage.jsx
-
-```jsx
-import React from "react";
-// css
-import "../css/StartPage.css";
-// components
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import Slide from "../components/Slide";
-
-function StartPage() {
-  return (
-    <>
-      <div className="box">로고</div>
-      {/* 헤더 컴포넌트 */}
-      <Header></Header>
-      {/* 슬라이드 컴포넌트 */}
-      <Slide></Slide>
-      {/* 분류메뉴 컴포넌트 */}
-      {/* 공지 컴포넌트 */}
-      {/* 추천 컴포넌트 */}
-      {/* 새목록 컴포넌트 */}
-      {/* 앱설치 안내 컴포넌트 */}
-      {/* 하단 컴포넌트 */}
-      <Footer></Footer>
-    </>
-  );
-}
-
-export default StartPage;
-```
-
-- StartPage.css
-
-```css
-.box {
-  background-color: red;
+```js
+async function getAllData() {
+  try {
+    await getData("posts", "GET");
+    await getData("albums", "GET");
+    await getData("photos", "GET");
+    await getData("todos", "GET");
+  } catch (error) {}
 }
 ```
 
-## 5. `module.css` 적용해 보기
-
-- index.css : 공통 적용 내용. (클래스 명 충돌 가능성)
-- StartPage.css 를 파일명 변경 : `StartPage.module.css`
-- css 가 아니라 module.css 를 불러들임.
-
-```jsx
-// import from "../css/StartPage.css"
-import styles from "../css/StartPage.module.css";
-```
-
-```jsx
-// <div className="box">로고</div>
-<div className={styles.box}>로고</div>
-```
-
-## 6. SCSS 활용하기
-
-- 소스 가독성이 상당히 좋다.
-- css 를 체계적으로 생성 및 관리.
-
-### 6.1. SCSS npm 설치
-
-- VSCode 플러그인은 설치 되어 있음. (live sass compiler)
-
-```bash
-npm i sass -D
-```
-
-### 6.2. 기본 폴더 생성
-
-- src/scss 폴더 생성 권장
-- src/scss/test.scss 파일 생성
-- `Watch Sass...` 실행
-
-### 6.3. 중첩(Nesting)
-
-```scss
-.wrap {
-  position: relative;
-  .notice {
-    width: 800px;
-    height: 400px;
-    a {
-      display: block;
-      &::hover {
-        background-color: red;
-      }
-      span {
-        display: block;
-      }
+```js
+async function getData(addr, method) {
+  // 주소
+  const url = `https://jsonplaceholder.typicode.com/${addr}`;
+  try {
+    const response = await fetch(url, { method });
+    if (response.ok) {
+      return response.json();
     }
+  } catch (error) {
+    console.log(error);
   }
 }
 ```
 
-### 6.4. 변수
-
-- 변수는 `$`기호를 사용한다.
-- 가능하면 외부파일로 생성하시길 권장
-- 변수만 모은 파일은 `css 생성을 하지 않는게` 좋아요
-
-```scss
-// 변수만들기
-
-$width-800: 800px;
-$heigh-400: 400px;
-$red: red;
-
-.wrap {
-  position: relative;
-  .notice {
-    width: 800px;
-    height: 400px;
-    a {
-      display: block;
-      &::hover {
-        background-color: red;
-      }
-      span {
-        display: block;
-      }
+```js
+async function getData(addr, method) {
+  // 주소
+  const url = `https://jsonplaceholder.typicode.com/${addr}`;
+  try {
+    const response = await fetch(url, { method });
+    if (response.ok) {
+      return response.json();
     }
+    return null;
+  } catch (error) {
+    console.log(error);
   }
 }
 ```
-
-- 변수만 모은 `\_val.scss`, `\_color.scss`
-
-```scss
-// _val.scss
-$width-800: 800px;
-$heigh-400: 400px;
-```
-
-```scss
-// _color.scss
-$red: red;
-```
-
-```scss
-// test.scss
-// 변수만들기
-
-@import "val";
-@import "color";
-
-.wrap {
-  position: relative;
-  .notice {
-    width: 800px;
-    height: 400px;
-    a {
-      display: block;
-      &::hover {
-        background-color: red;
-      }
-      span {
-        display: block;
-      }
-    }
-  }
-}
-```
-
-### 6.5. 함수
-
-- `파일명은 _ 붙이고 생성`, css 생성되지 말도록.
-- `src/scss/_mixins.scss` 파일 생성.
-
-### 6.6. `React 에서 scss` 쓰기로 했다면?
-
-- 반드시 `npm i sass -D` 가 되어있다는 전제로 진행 가능.
-- pages/StartPage.module.scss 파일 생성
-
-```jsx
-import "./StartPage.scss";
-```
-
-- pages/StartPage`.module.`scss 파일명 수정
-
-```jsx
-import styles from "./StartPage.module.scss";
-
-<div className={style.wrap}></div>;
-```
-
-# JSX.2
-
-## 1. JSX 에서 변수 사용하기
-
-- 값의 종류: 글자, 숫자, null, undifined...
-- 보간법(`{}`)을 이용하기: 중괄호 표현법
-
-```js
-import React from "react";
-
-function Header() {
-  // js 코드 자리
-  const title = "웹 서비스 제목";
-  const version = 0.5;
-  function say() {
-    return "하하하";
-  }
-  // 아래는 html jsx 출력자리
-  return (
-    <div>
-      <div>{title}</div>
-      <div>
-        버전: {version} {say()}
-      </div>
-    </div>
-  );
-}
-
-export default Header;
-```
-
-## 2. style 태그에 `css 객체` 넣기
-
-```js
-import React from "react";
-
-function Header() {
-  // js 코드 자리
-  const title = "웹 서비스 제목";
-  const version = 0.5;
-  function say() {
-    return "하하하";
-  }
-
-  // 아래는 html jsx 출력자리
-  return (
-    <div>
-      <div
-        style={{
-          backgroundColor: "green",
-          color: "fff",
-          border: "5px solid hotpink",
-        }}
-      >
-        {title}
-      </div>
-      <div>
-        버전: {version} {say()}
-      </div>
-    </div>
-  );
-}
-
-export default Header;
-```
-
-- 아래처럼 변수에 담아서 전달하시길 추천
-
-```js
-import React from "react";
-
-function Header() {
-  // js 코드 자리
-  const title = "웹 서비스 제목";
-  const version = 0.5;
-  function say() {
-    return "하하하";
-  }
-
-  const bgObj = {
-    backgroundColor: "green",
-    color: "#fff",
-    border: "5px solid hotpink",
-  };
-
-  // 아래는 html jsx 출력자리
-  return (
-    <div>
-      <div style={bgObj}>{title}</div>
-      <div>
-        버전: {version} {say()}
-      </div>
-    </div>
-  );
-}
-
-export default Header;
-```
-
-## 3. css 에 객체를 별도로 모아서 관리하기
-
-- 위의 css 객체를 `객체 리터럴 오브젝트 방식` 칭함
-- 관례상 css 객체는 `파스칼` 케이스를 씁니다.
-
-```js
-export const BgObj = {
-  backgroundColor: "green",
-  color: "#fff",
-  border: "5px solid hotpink",
-};
-export const BgObjRed = {
-  backgroundColor: "red",
-  color: "#fff",
-  border: "5px solid green",
-};
-```
-
-```jsx
-import React from "react";
-import { BgObj, BgObjRed } from "./bg";
-function Header() {
-  // js 코드 자리
-  const title = "웹 서비스 제목";
-  const version = 0.5;
-  function say() {
-    return "하하하";
-  }
-  const isLogin = true;
-
-  // 아래는 html jsx 출력자리
-  return (
-    <div>
-      <div style={isLogin ? BgObj : BgObjRed}>{title}</div>
-      <div>
-        버전: {version} {say()}
-      </div>
-    </div>
-  );
-}
-
-export default Header;
-```
-
