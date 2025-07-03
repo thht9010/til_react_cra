@@ -494,3 +494,16 @@ function Header() {
 export default Header;
 ```
 
+# CSS-in-JS
+
+- Styled Component
+- Emotion
+
+```bash
+npm i @emotion/react @emotion/styled
+```
+
+## 2. 왜 필요한가?
+
+- 태그 처럼 생겼다. (내가 만든 태그)
+- 태그가 내용을 설명하도록 구성한다.
