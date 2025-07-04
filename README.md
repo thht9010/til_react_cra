@@ -1068,7 +1068,7 @@ function Skeleton({ width = "100%", height = "20px" }) {
 export default Skeleton;
 ```
 
-- Tooltip 예제
+- Tooltip
 
 ```jsx
 import styled from "@emotion/styled";
