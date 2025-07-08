@@ -8,15 +8,17 @@ import Albums from "./pages/Albums";
 import Photos from "./pages/Photos";
 import Todos from "./pages/Todos";
 import Comments from "./pages/Comments";
+import Test from "./pages/Test";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <div className="wrap">
-    <Posts></Posts>
+    {/* <Posts></Posts>
     <Albums></Albums>
     <Photos></Photos>
     <Todos></Todos>
-    <Comments></Comments>
+    <Comments></Comments> */}
+    <Test></Test>
   </div>,
 );
