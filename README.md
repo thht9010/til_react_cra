@@ -1,114 +1,103 @@
-# interface 키워드
+# type 과 interface 비교
 
-- 오로지 `객체`만을 위한 문법
+## 1. 가장 큰 차이
 
-## 1. 의미
+- type : 객체, 기본형, 배열 등 모두 정의 가능
+- interface : 객체만 대상으로 정의 가능
 
-- 객체에 반드시 있어야 하는 속성을 정의함.
-- 개발자가 코드 진행 중 실수를 방지해 줌.
-- 가독성을 위한 문법
-
-## 2. 작성법
-
-- 무조건 객체 형태를 정의한다.
-- 기본형 타입 정의는 못한다.
+## 2. 객체 구조 정의 비교
 
 ```ts
-interface Person {
+interface IPerson {
   name: string;
   age: number;
 }
-
-const hi:Person = {
-  name: "안녕";
-  age: 30;
-}
-```
-
-### 3.2. 읽기전용 속성 (Readonly)
-
-```ts
-interface Person {
-  readonly name: string;
+type PersonType = {
+  name: string;
   age: number;
-  // 선택적 속성
-  city?: string;
-}
-
-const hi: Person = {
-  name: "안녕";
-  age: 30;
 };
-hi.age = 30;
-hi.name = 안녕
 ```
 
-### 3.3. 함수 타입 정의
+## 3. 확장 방식의 차이
+
+- interface : `extends`
+- type : `&`
 
 ```ts
-const add: (x: number, y: number): number => = (x: number, y: number): number => x + y;
-const add2: (x: number, y: number): number => x + y;
-
-interface Add {
-  // 키명                : 리턴종류
-  (x: number, y: number): number;
-}
-const add3: Add = (x, y) => x + y;
-```
-
-### 3.4. 클래스에서 활용함
-
-```ts
-// class 로 만들어진 객체는 반드시 속성이 있어야 해!
-// 약속을 지켜라를 정의할 때 사용함
-interface Person {
-  name: string;
-  hi(): string;
-  cry?(): string;
-}
-
-class Student implements Person {
-  name: string;
-  // new 하면 자동으로 실행되어서 {}를 만듦
-  // 자동 객체 생성자 함수로서 결과물을 instance 라고 함.
-  constuctor() {}
-  hi() {
-    return "안녕";
-  }
-}
-const hello: Student = new Student();
-
-class Teacher implements Person {
-  name: string;
-  hi() {
-    return "안녕하세요";
-  }
-}
-```
-
-### 3.5. 인터페이스 상속 (확장)
-
-- 유명한 라이브러리 소스에서 자주 보여짐.
-
-```ts
-interface Animal {
+interface IAnimal {
   name: string;
 }
-interface Dog extends Animal {
+// 확장
+interface IDog extends IAnimal {
   bark(): void;
 }
-interface Cat extends Animal {
-  cry(): void;
-}
-const cat: Cat = {
-  name: "야옹이",
-  cry: () => console.log("야옹"),
+
+type AnimalType = {
+  name: string;
 };
-interface Person extends Animal {
-  say(): void;
-}
-const hello: Person = {
-  name: "안녕"
-  say: () => console.log("안녕하세요"),
-}
+// 병합
+type DogType = AnimalType & {
+  bark(): void;
+};
 ```
+
+## 4. interface 만 가능함.
+
+- interface를 동일한 이름으로 재정의 가능
+
+```ts
+interface Dog = {
+  name: stirng;
+}
+interface Dog = {
+  age: number;
+}
+interface Dog = {
+  bark(): void;
+}
+const a: Dog = {
+  name: "강아지"
+  age: 20,
+  bark: () => console.log("멍")
+}
+// type 은 안됨
+type DogType = {}
+```
+
+## 5. type 만 가능
+
+- interface는 객체 모양만 만들수 있다.
+
+```js
+type Dir = "UP" | "DOWN" | "LEFT" | "RIGHT";
+type Result = string | number | boolean;
+// 배열, 튜플(배열인데 , 개수와 종류를 미리 정의)
+
+
+type Point = {number,number};
+```
+
+## 6. 클래스에서 implementes 는 `interface`
+
+```js
+interface 약속 = {
+  nmae: string;
+}
+class Person implements 약속 {
+  name: string;
+}
+
+// 아래도 가능함
+type 약속타입 = {
+  nubmer: string;
+}
+class Dog implements
+```
+
+
+## 7. 일반적 기준
+- 객체 모양을 정의하는 경우 : interface 권장
+- 여러 타입을 조합한다(유니온등) : type 권장
+- 복잡한 타입(속성에 함수, 유니언 등등): type 권장
+- 여러명이 작업한다면 : interface 권장
+- 외부 라이브러리는 일반적으로 interface 로 작성이 되어짐.
