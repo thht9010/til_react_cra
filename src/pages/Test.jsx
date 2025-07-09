@@ -1,22 +1,62 @@
 import React, { useState } from "react";
+import FormContainer from "../components/Forms/FormContainer";
+import LoginForm from "../components/form/LoginForm";
 
 function Test() {
   // js 자리
-  const [todoList, setTodoList] = useState([]);
-  const handleClick = () => {
-    const temp = "할일 이지요";
-    setTodoList([...todoList, temp]);
+  const [errorMessage, setErrorMessage] = useState("");
+  // 모든 데이터가 모여지는 변수다.
+  const [formData, setFormData] = useState({
+    user_id: "",
+    user_email: "",
+    user_pw: "",
+  });
+  const handleChange = e => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
+  const handleSubmit = e => {
+    // 웹브라우저 새로 고침 방지
+    e.preventDefault();
+    if (formData.user_id === "") {
+      errorMessage("아이디를 입력하세요.");
+      return;
+    }
+    if (formData.user_email === "") {
+      errorMessage("이메일을 입력하세요.");
+      return;
+    }
+    if (formData.user_pw === "") {
+      errorMessage("비밀 번호를 입력하세요.");
+      return;
+    }
+    console.log("전송");
+    console.log(`${userId} ${userEmail} ${userPassword}`);
+    // 쿼리 스트링으로 보내기.
+    console.log(`/login/?id=${userId}&email=${userEmail}&pw=${userPassword}`);
+
+    // 객체로 보내기.
+
+    setFormData({ id: userId, email: userEmail, pw: userPassword });
+    setErrorMessage("");
+  };
+
+  // // 모든 state 를 하나로 관리합니다.
+  // const [saveData, setSaveData] = useState({});
+
+  // const 함수명 = e => {
+  //   setSaveData({ [name]: value });
+  // };
   // jsx 자리
   return (
     <div>
-      <input type="text" />
-      <button onClick={handleClick}>목록 추가</button>
-      <ul>
-        {todoList.map((item, index) => (
-          <li key={index}>{item}</li>
-        ))}
-      </ul>
+      <h1>회원로그인</h1>
+      <LoginForm
+        formData={formData}
+        errorMessage={errorMessage}
+        handleChange={handleChange}
+        handleSubmit={handleSubmit}
+      ></LoginForm>
     </div>
   );
 }
