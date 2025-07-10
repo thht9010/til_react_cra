@@ -13,6 +13,7 @@ function Test() {
   });
   const handleChange = e => {
     const { name, value } = e.target;
+    console.log(name, value);
     setFormData({ ...formData, [name]: value });
   };
   const handleSubmit = e => {
@@ -36,17 +37,10 @@ function Test() {
     console.log(`/login/?id=${userId}&email=${userEmail}&pw=${userPassword}`);
 
     // 객체로 보내기.
-
     setFormData({ id: userId, email: userEmail, pw: userPassword });
     setErrorMessage("");
   };
 
-  // // 모든 state 를 하나로 관리합니다.
-  // const [saveData, setSaveData] = useState({});
-
-  // const 함수명 = e => {
-  //   setSaveData({ [name]: value });
-  // };
   // jsx 자리
   return (
     <div>

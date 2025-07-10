@@ -27,13 +27,13 @@ const InputGroup = styled.div`
   margin-bottom: 10px;
 `;
 
-function InputField({ label, type, name, value, placeholder, onChange }) {
+function InputField({ label, type, name, id, value, placeholder, onChange }) {
   // js 자리
 
   // jsx 자리
   return (
     <InputGroup>
-      <StyledLabel htmlFor={name}>{label}</StyledLabel>
+      <StyledLabel htmlFor={id}>{label}</StyledLabel>
       <StyledInput
         type={type}
         name={name}

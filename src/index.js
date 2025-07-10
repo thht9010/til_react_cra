@@ -9,6 +9,7 @@ import Photos from "./pages/Photos";
 import Todos from "./pages/Todos";
 import Comments from "./pages/Comments";
 import Test from "./pages/Test";
+import RegisterPage from "./pages/RegisterPage";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -19,6 +20,6 @@ root.render(
     <Photos></Photos>
     <Todos></Todos>
     <Comments></Comments> */}
-    <Test></Test>
+    <RegisterPage></RegisterPage>
   </div>,
 );
