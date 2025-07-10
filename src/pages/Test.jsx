@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import FormContainer from "../components/Forms/FormContainer";
 import LoginForm from "../components/form/LoginForm";
 
 function Test() {
@@ -20,24 +19,25 @@ function Test() {
     // 웹브라우저 새로 고침 방지
     e.preventDefault();
     if (formData.user_id === "") {
-      errorMessage("아이디를 입력하세요.");
+      setErrorMessage("아이디를 입력하세요.");
       return;
     }
     if (formData.user_email === "") {
-      errorMessage("이메일을 입력하세요.");
+      setErrorMessage("이메일을 입력하세요.");
       return;
     }
     if (formData.user_pw === "") {
-      errorMessage("비밀 번호를 입력하세요.");
+      setErrorMessage("비밀 번호를 입력하세요.");
       return;
     }
     console.log("전송");
-    console.log(`${userId} ${userEmail} ${userPassword}`);
     // 쿼리 스트링으로 보내기.
-    console.log(`/login/?id=${userId}&email=${userEmail}&pw=${userPassword}`);
+    console.log(
+      `/login/?id=${formData.user_id}&email=${formData.user_email}&pw=${formData.user_pw}`,
+    );
 
     // 객체로 보내기.
-    setFormData({ id: userId, email: userEmail, pw: userPassword });
+    const data = { ...formData };
     setErrorMessage("");
   };
 

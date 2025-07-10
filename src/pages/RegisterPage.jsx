@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import ReisterForm from "../components/form/ReisterForm";
 
 function RegisterPage() {
   // js 자리
@@ -23,7 +24,7 @@ function RegisterPage() {
   return (
     <div>
       <h1>회원가입</h1>
-      <div>회원가입 Form</div>
+      <ReisterForm formData={formData} errorMessage={errorMessage} />
     </div>
   );
 }
