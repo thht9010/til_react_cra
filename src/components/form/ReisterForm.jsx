@@ -35,7 +35,7 @@ function ReisterForm({
   // js 자리
   // 이미지 미리보기 기능
   const handlePreviewImg = e => {
-    console.log(e.target.files[0]);
+    const file = e.target.files[0];
     if (file) {
       const 임시주소 = URL.createObjectURL(file);
     }
@@ -148,10 +148,11 @@ function ReisterForm({
           >
             <SelectOption value="">---지역을 선택해주세요</SelectOption>
 
-            {formData.user_location_default.map((item, index))}
-            <SelectOption value={`${item}`} key={index}>
-              {item}
-            </SelectOption>
+            {formData.user_location_default.map((item, index) => (
+              <SelectOption value={`${item}`} key={index}>
+                {item}
+              </SelectOption>
+            ))}
           </SelectList>
         </SelectGroup>
         <FormLabel>프로필</FormLabel>
