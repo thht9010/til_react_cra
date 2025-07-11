@@ -1,31 +1,10 @@
 import styled from "@emotion/styled";
 import React from "react";
+import { InputGroup, InputStyled, Label } from "./InputUistyles";
 // 전역자리 (window) : 리랜더링 반영 안됨.
 // styled 코드 자리
-const InputGroup = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-`;
-const Label = styled.div`
-  font-size: 11px;
-  font-weight: 500;
-  color: #333333;
-  white-space: nowrap;
-  min-width: 60px;
-`;
-const InputStyled = styled.div`
-  width: 100%;
-  border: 1px solid #cccccc;
-  border-radius: 8px;
-  padding: 10px;
-  font-size: 12px;
-  &:focus {
-    outline: none;
-    border: 1px solid #007bff;
-  }
-`;
-function InputUi({ id, type, name, value, placeholder, label }) {
+
+function InputUi({ id, type, name, value, placeholder, label, onChange }) {
   // js 자리
 
   // jsx 자리
@@ -38,6 +17,7 @@ function InputUi({ id, type, name, value, placeholder, label }) {
         value={value}
         placeholder={placeholder}
         id={id}
+        onChange={onChange}
       />
     </InputGroup>
   );
