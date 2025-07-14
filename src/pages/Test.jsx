@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 function Test() {
   // js 자리
-  const [] = useState(0);
+  const [count, setCount] = useState(0);
 
   useEffect(() => {
     console.log("안녕하세요");
@@ -21,7 +21,7 @@ function Test() {
   return (
     <div>
       <p>{count}</p>
-      <button>{() => setCount(count + 1)}점수</button>
+      <button onClick={() => setCount(count + 1)}>점수</button>
     </div>
   );
 }

@@ -10,6 +10,7 @@ import Todos from "./pages/Todos";
 import Comments from "./pages/Comments";
 import Test from "./pages/Test";
 import RegisterPage from "./pages/RegisterPage";
+import Todo from "./pages/Todo";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -21,6 +22,7 @@ root.render(
     <Todos></Todos>
     <Comments></Comments> */}
     {/* <RegisterPage /> */}
-    <Test></Test>
+    {/* <Test></Test> */}
+    <Todo></Todo>
   </div>,
 );
