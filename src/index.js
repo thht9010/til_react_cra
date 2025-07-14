@@ -20,6 +20,7 @@ root.render(
     <Photos></Photos>
     <Todos></Todos>
     <Comments></Comments> */}
-    <RegisterPage />
+    {/* <RegisterPage /> */}
+    <Test></Test>
   </div>,
 );
