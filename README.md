@@ -112,3 +112,7 @@ let hello: IdolType = {
   year: 2020,
 };
 ```
+
+## 2. interface 키워드로 정의하기
+
+- 복잡한 타입에 대한 정의
